@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <title>Trivia Game</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="assets/style.css" />
+    <script src="assets/script.js"></script>
 </head>
       <body class="text-center">
 
@@ -141,9 +142,104 @@
                 
         </div> 
 
-     
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="assets/javascript/app.js"></script>
+
+
+
+    
+    
+    <script src="https://code.jquery.com/jquery-3.4.1.js"   integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="   crossorigin="anonymous"></script>
+
+<script>
+
+$(document).ready(function() {
+
+
+    $('#countdown').hide();
+    $('.trivia-ques').hide();
+    $('.results').hide();
+
+    
+    var number = 90;
+    var intervalId;
+    var correctCount = 0;
+    var wrongCount = 0;
+    var unanswered = 0;
+
+
+    function showQuestions(){
+        $('#countdown').show();
+        $('.trivia-ques').show();
+        $('#game-done').show();
+    }
+
+
+    function countdownTimer(){
+            intervalId = setInterval(decrement, 1000);
+    }
+   
+       
+    function decrement(){
+        number--;
+        $('#timer').html(" " + number + " " + "seconds");
+        if (number ===1){
+            $('#timer').html(" " + number + " " + "second");
+        }
+        else if(number ===0) {
+            stop();
+            hide();
+            displaySummary();
+        }
+    }
+
+   
+    function stop() {
+        clearInterval(intervalId);
+    }
+
+       
+    function hide(){
+        $('#countdown').hide();
+        $('.trivia-ques').hide();
+        $('#game-done').hide();
+    }
+
+
+    function displaySummary(){
+        $('.results').show();
+        unanswered = (8-(correctCount+wrongCount));
+        $('#correctScore').text("Correct Answers:" + " " + correctCount); 
+        $('#wrongScore').text("Wrong Answers:" + " " + wrongCount); 
+        $('#unanswered').text("Unanswered:" + " " + unanswered); 
+    }
+
+    $('#game-start').on('click', function(){
+        $('#game-start').hide();
+        showQuestions();
+        countdownTimer();
+    }); 
+
+   
+    $('#game-done').on('click', function(){
+        $('#game-start').hide(); 
+        hide();
+        displaySummary();
+    });
+
+   
+    $('input[type=radio]').on ('change', function(){
+    correctCount = $('input[value=correct]:checked').length;
+    wrongCount = $('input[value=wrong]:checked').length;
+    unanswered = (8-(correctCount+wrongCount));
+    });
+
+
+});
+    
+    
+    </script>
+
+
+
 
       </body>
 </html>
